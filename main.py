@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from db import get_db
 from sqlalchemy.orm import Session
-from schema import *
+from scheme import Usercreateshcema,Userdeletescheme,userchangescheme
 from service import *
 app = FastAPI()
 
@@ -10,22 +10,28 @@ app = FastAPI()
 def healthy_check():
     return {"msg":"this is my site"}
 
-@app.get("/user")
-def get_user(username: str,db:Session=Depends(get_db)):
-    data=get_user_in_db(username=username,db=db)
-    return data
-
 @app.post("/user")
 def create_user(item: Usercreateshcema,db:Session=Depends(get_db)):
     message=create_user_in_db(data=item,db=db)
     return message
 
 @app.delete("/user")
-def delete_user(item:Userdeleteschema,db:Session=Depends(get_db)):
+def delete_user(item:Userdeletescheme,db:Session=Depends(get_db)):
     message=delete_user_in_db(data=item,db=db)
     return message
 
-@app.put("/username")
-def update_user_username(username:str,item:Userupdateshcema,db:Session= Depends(get_db)):
-    message=update_user_username(current_username=username,data=item,db=db)
+@app.get("/user")
+def get_user(username: str, db: Session = Depends(get_db)):
+    user = get_current_user(username=username, db=db)
+    return user
+
+@app.put("/user")
+def update_user(username:str,item:userchangescheme,db: Session = Depends(get_db)):
+    message = change_user_password(user_name=username,data=item,db=db)
     return message
+
+@app.delete("/all_user")
+def reset_my_base():
+    msg=reset_base()
+    return {"msg":"base reseted"}
+

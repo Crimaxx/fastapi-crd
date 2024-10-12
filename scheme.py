@@ -6,13 +6,14 @@ class Usercreateshcema(BaseModel):
     class Config:
         extra="forbid"
 
-class Userdeleteschema(BaseModel):
+class Userdeletescheme(BaseModel):
     username:str
     class Config:
         extra="forbid"
 
-class Userupdateshcema(BaseModel):
-    new_username:str
+
+class userchangescheme(BaseModel):
     password:str
+    new_password:str
     class Config:
         extra="forbid"
